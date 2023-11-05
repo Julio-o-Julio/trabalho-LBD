@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(todoRoutes);
 
-app.get('/health', (request, response) => {
+app.get('/', (request, response) => {
   return response.json('up');
 });
 
