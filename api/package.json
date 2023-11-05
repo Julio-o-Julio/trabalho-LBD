@@ -1,7 +1,7 @@
 {
-  "name": "trabalho-lbd",
+  "name": "api",
   "version": "1.0.0",
-  "description": "Sistema de Gerenciamento de Tarefas Pessoais",
+  "description": "API - Sistema de Gerenciamento de Tarefas Pessoais",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
