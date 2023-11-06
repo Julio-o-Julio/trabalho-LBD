@@ -7,10 +7,11 @@ const todoRoutes = express.Router();
 
 // Create
 todoRoutes.post('/todos', async (request, response) => {
-  const { name } = request.body;
+  const { name, description } = request.body;
   const todo = await prisma.todo.create({
     data: {
-      name
+      name,
+      description
     }
   });
 
@@ -37,7 +38,8 @@ todoRoutes.put('/todos', async (request, response) => {
     where: { id },
     data: {
       name,
-      status
+      status,
+      description
     }
   });
 
