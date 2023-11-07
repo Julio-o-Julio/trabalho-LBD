@@ -17,19 +17,15 @@ Sistema de Gerenciamento de Tarefas Pessoais
 4. Após abir mais um terminal e o Docker rode os seguintes comandos em um dos terminais:
 
 > cd ./api
-
 > npm install
-
 > docker-compose up -d
 
-> npm run dev
+`npm run dev`
 
 5. No outro terminal rode os seguintes comandos:
 
 > cd ./front
-
 > npm install
-
 > npm run dev
 
 6. Para abrir o projeto no seu navegador, basta entrar nesta url: [http://localhost:5173/](http://localhost:5173/)
