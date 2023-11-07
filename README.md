@@ -17,10 +17,12 @@ Sistema de Gerenciamento de Tarefas Pessoais
 4. Após abir mais um terminal e o Docker rode os seguintes comandos em um dos terminais:
 
 > cd ./api
+
 > npm install
+
 > docker-compose up -d
 
-`npm run dev`
+> npm run dev
 
 5. No outro terminal rode os seguintes comandos:
 
