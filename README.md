@@ -14,14 +14,14 @@ Sistema de Gerenciamento de Tarefas Pessoais
 
 3. Agora precisamos de um terminal para rodar o Back-end e o Docker, abra o Docker e também abra mais um terminal na pasta trabalho-LBD.
 
-4. Após abir mais um terminal e o Docker rode os seguintes comandos em um deles:
+4. Após abir mais um terminal e o Docker rode os seguintes comandos em um dos terminais:
 
 > cd ./api
 > npm install
 > docker-compose up -d
 > npm run dev
 
-5. No outro terminal rode os seguintes comandos em um deles:
+5. No outro terminal rode os seguintes comandos:
 
 > cd ./front
 > npm install
