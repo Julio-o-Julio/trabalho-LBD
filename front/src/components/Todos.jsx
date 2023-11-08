@@ -1,4 +1,4 @@
-const Todos = ({ todos, deleteTodo }) => {
+const Todos = ({ todos, deleteTodo, modifyStatusTodo, setSelectedTodo }) => {
   return (
     <section className="todos">
       {todos.map((todo) => {
@@ -6,10 +6,18 @@ const Todos = ({ todos, deleteTodo }) => {
           <div key={todo.id} className="todo">
             <button
               className={`checkbox ${todo.status ? 'active' : ''}`}
+              onClick={() => modifyStatusTodo(todo)}
             ></button>
-            <p>{todo.name}</p>
-            {todo.description && <p>{todo.description}</p>}
-            <button className="buttonsTodo">
+            <article className="todoTextBox">
+              <p className="todoName">{todo.name}</p>
+              {todo.description && (
+                <p className="todoDescription">{todo.description}</p>
+              )}
+            </article>
+            <button
+              className="buttonsTodo"
+              onClick={() => setSelectedTodo(todo)}
+            >
               <img src="/edit-svg.svg" alt="Editar tarefa" />
             </button>
             <button className="buttonsTodo" onClick={() => deleteTodo(todo.id)}>

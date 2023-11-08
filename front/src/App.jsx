@@ -7,6 +7,13 @@ function App() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState(null);
+
+  const setSelectedTodo = (todo) => {
+    setTodo(todo);
+    setName(todo.name);
+    setDescription(todo.description);
+  };
 
   const createTodo = async () => {
     const response = await axios.post('http://localhost:8080/todos', {
@@ -31,6 +38,28 @@ function App() {
     getTodos();
   };
 
+  const modifyStatusTodo = async (todo) => {
+    const response = await axios.put('http://localhost:8080/todos', {
+      id: todo.id,
+      status: !todo.status
+    });
+
+    getTodos();
+  };
+
+  const editTodo = async () => {
+    const response = await axios.put('http://localhost:8080/todos', {
+      id: todo.id,
+      name,
+      description
+    });
+
+    setTodo(null);
+    setName('');
+    setDescription('');
+    getTodos();
+  };
+
   useEffect(() => {
     getTodos();
   }, []);
@@ -38,7 +67,8 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    createTodo(name, description);
+    if (todo) editTodo();
+    else createTodo(name, description);
   };
 
   return (
@@ -46,14 +76,19 @@ function App() {
       <header className="header">
         <h2>Minha lista de tarefas</h2>
       </header>
-      <Todos todos={todos} deleteTodo={deleteTodo} />
+      <Todos
+        todos={todos}
+        deleteTodo={deleteTodo}
+        modifyStatusTodo={modifyStatusTodo}
+        setSelectedTodo={setSelectedTodo}
+      />
       <form className="form" onSubmit={handleSubmit}>
         <input
           className="input"
           name="name"
           type="text"
           value={name}
-          placeholder="Nome da tarefa*"
+          placeholder={todo ? 'Alterar nome' : 'Nome da tarefa*'}
           onChange={(event) => {
             setName(event.target.value);
           }}
@@ -63,12 +98,14 @@ function App() {
           name="description"
           type="text"
           value={description}
-          placeholder="Descrição da tarefa"
+          placeholder={todo ? 'Adicionar descrição' : 'Descrição da tarefa'}
           onChange={(event) => {
             setDescription(event.target.value);
           }}
         />
-        <button className="newTaskButton">Adicionar tarefa</button>
+        <button className="newTaskButton">
+          {todo ? 'Alterar tarefa' : 'Adicionar tarefa'}
+        </button>
       </form>
     </main>
   );

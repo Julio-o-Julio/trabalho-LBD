@@ -26,7 +26,7 @@ todoRoutes.get('/todos', async (request, response) => {
 
 // Update
 todoRoutes.put('/todos', async (request, response) => {
-  const { id, name, status } = request.body;
+  const { id, name, status, description } = request.body;
 
   if (!id) return response.status(400).json('Id is required');
 
