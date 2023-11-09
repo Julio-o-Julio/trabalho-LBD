@@ -7,12 +7,28 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://admin:admin@localhost:5433"
+  url      = "postgres://admin:admin@localhost:5433/database"
 }
 
-model Todo{
+model Todo {
   id Int @id @default(autoincrement())
   status Boolean @default(false)
   name String
   description String @default("")
+  tagId TagTodo[]
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  name String
+  color String @default("gray")
+  todos TagTodo[]
+}
+
+model TagTodo {
+  id Int @id @default(autoincrement())
+  todo Todo @relation(fields: [todoId], references: [id])
+  todoId Int
+  tag Tag @relation(fields: [tagId], references: [id])
+  tagId Int
 }
