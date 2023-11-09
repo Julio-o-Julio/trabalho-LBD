@@ -60,9 +60,13 @@ todoRoutes.delete('/todos/:id', async (request, response) => {
 
   if (!todoAlreadyExist) return response.status(404).json('Todo not exists');
 
+  await prisma.tagTodo.deleteMany({
+    where: { todoId: intId }
+  });
+
   await prisma.todo.delete({ where: { id: intId } });
 
-  return response.status(200).send();
+  return response.status(200).json({ success: 'Todo deleted' });
 });
 
 module.exports = todoRoutes;
