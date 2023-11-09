@@ -9,10 +9,16 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState(null);
 
-  const setSelectedTodo = (todo) => {
-    setTodo(todo);
-    setName(todo.name);
-    setDescription(todo.description);
+  const setSelectedTodo = (selectedTodo) => {
+    if (todo === selectedTodo) {
+      setTodo(null);
+      setName('');
+      setDescription('');
+    } else {
+      setTodo(selectedTodo);
+      setName(selectedTodo.name);
+      setDescription(selectedTodo.description);
+    }
   };
 
   const createTodo = async () => {
