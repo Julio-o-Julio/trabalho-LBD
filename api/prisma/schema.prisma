@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://admin:admin@localhost:5433/database"
+  url      = env("DATABASE_URL")
 }
 
 model Todo {
@@ -15,14 +15,14 @@ model Todo {
   status Boolean @default(false)
   name String
   description String @default("")
-  tagId TagTodo[]
+  tagTodo TagTodo[]
 }
 
 model Tag {
   id Int @id @default(autoincrement())
   name String
   color String @default("gray")
-  todos TagTodo[]
+  tagTodo TagTodo[]
 }
 
 model TagTodo {
