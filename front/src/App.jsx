@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Todos from './components/Todos';
 import './styles/App.css';
+import ModalAddTag from './components/ModalAddTag';
 
 function App() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState(null);
+
+  const [modalAddTag, setModalAddTag] = useState(null);
 
   const setSelectedTodo = (selectedTodo) => {
     if (todo === selectedTodo) {
@@ -74,7 +77,7 @@ function App() {
     event.preventDefault();
 
     if (todo) editTodo();
-    else createTodo(name, description);
+    else createTodo();
   };
 
   return (
@@ -82,12 +85,16 @@ function App() {
       <header className="header">
         <h2>Minha lista de tarefas</h2>
       </header>
+
       <Todos
         todos={todos}
         deleteTodo={deleteTodo}
         modifyStatusTodo={modifyStatusTodo}
         setSelectedTodo={setSelectedTodo}
+        setModalAddTag={setModalAddTag}
+        setTodo={setTodo}
       />
+
       <form className="form" onSubmit={handleSubmit}>
         <input
           className="input"
@@ -113,6 +120,10 @@ function App() {
           {todo ? 'Alterar tarefa' : 'Adicionar tarefa'}
         </button>
       </form>
+
+      {modalAddTag && (
+        <ModalAddTag todo={todo} setModalAddTag={setModalAddTag} />
+      )}
     </main>
   );
 }

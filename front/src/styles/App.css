@@ -26,7 +26,7 @@
   margin-bottom: -1rem;
   display: grid;
   align-items: center;
-  grid-template-columns: 10% 1fr 10% 10%;
+  grid-template-columns: 8% 1fr 8% 8% 8%;
 }
 
 .todoName {
@@ -103,4 +103,45 @@
 .input:hover {
   outline: none;
   border-color: #646cff;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 1rem calc(4rem + 15px) 1rem 4rem;
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+@media (max-width: 30rem) {
+  .modalContainer {
+    padding: 1rem calc(2rem + 15px) 1rem 2rem;
+  }
+}
+
+.modalContent {
+  padding: 2rem;
+  margin: 0 auto auto;
+  border: 2px solid #64697b;
+  border-radius: 1rem;
+  background: #333;
+}
+
+.tags {
+  max-width: 768px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.tag {
+  padding-right: 2rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 15% 1fr 15% 15%;
 }

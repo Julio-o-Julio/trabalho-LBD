@@ -1,4 +1,11 @@
-const Todos = ({ todos, deleteTodo, modifyStatusTodo, setSelectedTodo }) => {
+const Todos = ({
+  todos,
+  deleteTodo,
+  modifyStatusTodo,
+  setSelectedTodo,
+  setModalAddTag,
+  setTodo
+}) => {
   return (
     <section className="todos">
       {todos.map((todo) => {
@@ -8,20 +15,37 @@ const Todos = ({ todos, deleteTodo, modifyStatusTodo, setSelectedTodo }) => {
               className={`checkbox ${todo.status ? 'active' : ''}`}
               onClick={() => modifyStatusTodo(todo)}
             ></button>
+
             <article className="todoTextBox">
               <p className="todoName">{todo.name}</p>
               {todo.description && (
                 <p className="todoDescription">{todo.description}</p>
               )}
             </article>
+
             <button
               className="buttonsTodo"
+              title="Adicionar tags"
+              onClick={() => {
+                setModalAddTag(true);
+                setTodo(todo);
+              }}
+            >
+              <img src="/plus-svg.svg" alt="Adicionar tags" />
+            </button>
+            <button
+              className="buttonsTodo"
+              title="Editar tarefa"
               onClick={() => setSelectedTodo(todo)}
             >
               <img src="/edit-svg.svg" alt="Editar tarefa" />
             </button>
-            <button className="buttonsTodo" onClick={() => deleteTodo(todo.id)}>
-              <img src="/delete-svg.svg" alt="Editar tarefa" />
+            <button
+              className="buttonsTodo"
+              title="Apagar tarefa"
+              onClick={() => deleteTodo(todo.id)}
+            >
+              <img src="/delete-svg.svg" alt="Apagar tarefa" />
             </button>
           </div>
         );

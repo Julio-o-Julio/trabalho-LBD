@@ -81,7 +81,7 @@ tagRoutes.put('/tags', async (request, response) => {
     where: { id },
     data: {
       name,
-      color
+      color: color || tag.color
     }
   });
 
