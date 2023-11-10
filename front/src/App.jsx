@@ -73,6 +73,10 @@ function App() {
     getTodos();
   }, []);
 
+  useEffect(() => {
+    if (!modalAddTag) getTodos();
+  }, [modalAddTag]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -93,6 +97,7 @@ function App() {
         setSelectedTodo={setSelectedTodo}
         setModalAddTag={setModalAddTag}
         setTodo={setTodo}
+        getTodos={getTodos}
       />
 
       <form className="form" onSubmit={handleSubmit}>
@@ -105,6 +110,7 @@ function App() {
           onChange={(event) => {
             setName(event.target.value);
           }}
+          required
         />
         <input
           className="input"
@@ -122,7 +128,11 @@ function App() {
       </form>
 
       {modalAddTag && (
-        <ModalAddTag todo={todo} setModalAddTag={setModalAddTag} />
+        <ModalAddTag
+          todo={todo}
+          getTodos={getTodos}
+          setModalAddTag={setModalAddTag}
+        />
       )}
     </main>
   );

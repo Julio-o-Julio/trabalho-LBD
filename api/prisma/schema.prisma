@@ -21,7 +21,7 @@ model Todo {
 model Tag {
   id Int @id @default(autoincrement())
   name String
-  color String @default("gray")
+  color String @default("#989898")
   tagTodo TagTodo[]
 }
 

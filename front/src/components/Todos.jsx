@@ -1,10 +1,13 @@
+import SpanTags from './SpanTags';
+
 const Todos = ({
   todos,
   deleteTodo,
   modifyStatusTodo,
   setSelectedTodo,
   setModalAddTag,
-  setTodo
+  setTodo,
+  getTodos
 }) => {
   return (
     <section className="todos">
@@ -22,6 +25,8 @@ const Todos = ({
                 <p className="todoDescription">{todo.description}</p>
               )}
             </article>
+
+            <SpanTags todo={todo} getTodos={getTodos} />
 
             <button
               className="buttonsTodo"

@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import Tags from './Tags';
 import axios from 'axios';
 
-const ModalAddTag = ({ todo, setModalAddTag }) => {
+const ModalAddTag = ({ todo, getTodos, setModalAddTag }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState(null);
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState(null);
 
   const setSelectedTag = (selectedTag) => {
-    if (todo === selectedTag) {
+    if (tag === selectedTag) {
       setTag(null);
       setName('');
       setColor(null);
@@ -22,9 +22,7 @@ const ModalAddTag = ({ todo, setModalAddTag }) => {
 
   const createTag = async () => {
     const response = await axios.post('http://localhost:8080/tags', {
-      name,
-      color,
-      todoId: todo.id
+      name
     });
 
     getTags();
@@ -44,29 +42,21 @@ const ModalAddTag = ({ todo, setModalAddTag }) => {
     getTags();
   };
 
-  const modifyColorTag = async (color) => {
+  const editTag = async () => {
     if (tag) {
       const response = await axios.put(`http://localhost:8080/tags`, {
         id: tag.id,
         name,
         color,
+        todoId: todo.id
       });
-  
+
+      setTag(null);
+      setName('');
+      setColor(null);
       getTags();
+      getTodos();
     }
-  };  
-
-  const editTag = async () => {
-    const response = await axios.put('http://localhost:8080/tags', {
-      id: tag.id,
-      name,
-      color
-    });
-
-    setTag(null);
-    setName('');
-    setColor(null);
-    getTags();
   };
 
   useEffect(() => {
@@ -92,8 +82,10 @@ const ModalAddTag = ({ todo, setModalAddTag }) => {
         <Tags
           tags={tags}
           deleteTag={deleteTag}
-          modifyColorTag={modifyColorTag}
           setSelectedTag={setSelectedTag}
+          getTags={getTags}
+          todo={todo}
+          setModalAddTag={setModalAddTag}
         />
 
         <form className="form" onSubmit={handleSubmit}>
@@ -106,20 +98,11 @@ const ModalAddTag = ({ todo, setModalAddTag }) => {
             onChange={(event) => {
               setName(event.target.value);
             }}
-          />
-          <input
-            className="input"
-            name="color"
-            type="text"
-            value={color ? color : ''}
-            placeholder={tag ? 'Adicionar cor a tag' : 'Cor da tag'}
-            onChange={(event) => {
-              setColor(event.target.value);
-            }}
+            required
           />
 
           <button className="newTaskButton">
-            {todo ? 'Alterar tag' : 'Adicionar tag'}
+            {tag ? 'Alterar tag' : 'Adicionar tag'}
           </button>
         </form>
       </article>

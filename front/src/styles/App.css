@@ -26,7 +26,7 @@
   margin-bottom: -1rem;
   display: grid;
   align-items: center;
-  grid-template-columns: 8% 1fr 8% 8% 8%;
+  grid-template-columns: 8% 1fr 20% 8% 8% 8%;
 }
 
 .todoName {
@@ -124,24 +124,88 @@
 }
 
 .modalContent {
-  padding: 2rem;
+  padding: 1rem 2rem 2rem;
   margin: 0 auto auto;
   border: 2px solid #64697b;
   border-radius: 1rem;
   background: #333;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: modalUp 0.3s forwards;
 }
 
 .tags {
-  max-width: 768px;
+  margin-top: 1rem;
   height: 300px;
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
   overflow-y: scroll;
 }
 
 .tag {
-  padding-right: 2rem;
+  padding-right: 1.5rem;
   display: grid;
   align-items: center;
-  grid-template-columns: 15% 1fr 15% 15%;
+  grid-template-columns: 18% 1fr 12% 12%;
+}
+
+.inputColor {
+  height: 80%;
+  padding: 3px;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background-color: #555;
+  transition: all 0.2s ease-in;
+}
+
+.inputColor:hover {
+  border-color: #646cff;
+}
+
+.tagTextBox {
+  cursor: pointer;
+  margin-right: 0.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background-color: #555;
+  transition: all 0.2s ease-in;
+}
+
+.tagTextBox:hover {
+  border-color: #646cff;
+}
+
+.spanTags {
+  height: 70%;
+  margin: 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 0.2rem;
+  background-color: #333;
+  overflow: hidden;
+}
+
+.spanTags > div {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.spanTags > div:hover {
+  opacity: 0.5;
+}
+
+@keyframes modalUp {
+  to {
+    opacity: initial;
+    transform: initial;
+  }
 }
