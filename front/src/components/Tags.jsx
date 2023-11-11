@@ -28,8 +28,7 @@ const Tags = ({
       const response = await axios.put(`http://localhost:8080/tags`, {
         id: tag.id,
         name: tag.name,
-        color,
-        todoId: todo.id
+        color
       });
 
       getTags();

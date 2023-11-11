@@ -21,6 +21,7 @@ todoRoutes.post('/todos', async (request, response) => {
 // Read
 todoRoutes.get('/todos', async (request, response) => {
   const todos = await prisma.todo.findMany();
+
   return response.status(200).json(todos);
 });
 

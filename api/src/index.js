@@ -14,4 +14,4 @@ app.get('/', (request, response) => {
   return response.json('up');
 });
 
-app.listen('8080', () => console.log('Server up in pot: 8080'));
+app.listen('8080', () => console.log('Server up in route: 8080'));
