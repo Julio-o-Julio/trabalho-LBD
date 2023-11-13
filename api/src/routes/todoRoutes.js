@@ -1,73 +1,119 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('../scripts/prisma/prismaConfig');
 
 const todoRoutes = express.Router();
 
+const handleError = (response, status, message) => {
+  return response.status(status).json({ error: message });
+};
+
+const validateId = (id, response) => {
+  const intId = parseInt(id);
+  if (!intId) {
+    handleError(response, 400, 'Id is required');
+    return null;
+  }
+  return intId;
+};
+
+const findTodoById = async (id, response) => {
+  const todo = await prisma.todo.findUnique({ where: { id } });
+  if (!todo) {
+    handleError(response, 404, 'Todo not found');
+    return null;
+  }
+  return todo;
+};
+
 // Create
 todoRoutes.post('/todos', async (request, response) => {
-  const { name, description } = request.body;
-  const todo = await prisma.todo.create({
-    data: {
-      name,
-      description
-    }
-  });
+  try {
+    const { name, description } = request.body;
+    const todo = await prisma.todo.create({
+      data: { name, description }
+    });
 
-  return response.status(201).json(todo);
+    await prisma.log.create({
+      data: {
+        table_name: 'Todo',
+        action: 'CREATE',
+        record_id: todo.id
+      }
+    });
+
+    return response.status(201).json(todo);
+  } catch (error) {
+    console.error(error);
+    return handleError(response, 500, 'Internal Server Error');
+  }
 });
 
 // Read
 todoRoutes.get('/todos', async (request, response) => {
-  const todos = await prisma.todo.findMany();
-
-  return response.status(200).json(todos);
+  try {
+    const todos = await prisma.todo.findMany();
+    return response.status(200).json(todos);
+  } catch (error) {
+    console.error(error);
+    return handleError(response, 500, 'Internal Server Error');
+  }
 });
 
 // Update
 todoRoutes.put('/todos', async (request, response) => {
-  const { id, name, status, description } = request.body;
+  try {
+    const { id, name, status, description } = request.body;
+    const intId = validateId(id, response);
+    if (intId === null) return;
 
-  if (!id) return response.status(400).json('Id is required');
+    const todo = await findTodoById(intId, response);
+    if (todo === null) return;
 
-  const todoAlreadyExist = await prisma.todo.findUnique({ where: { id } });
+    const alterTodo = await prisma.todo.update({
+      where: { id: intId },
+      data: { name, status, description }
+    });
 
-  if (!todoAlreadyExist) return response.status(404).json('Todo not exists');
+    await prisma.log.create({
+      data: {
+        table_name: 'Todo',
+        action: 'UPDATE',
+        record_id: id
+      }
+    });
 
-  const alterTodo = await prisma.todo.update({
-    where: { id },
-    data: {
-      name,
-      status,
-      description
-    }
-  });
-
-  return response.status(200).json(alterTodo);
+    return response.status(200).json(alterTodo);
+  } catch (error) {
+    console.error(error);
+    return handleError(response, 500, 'Internal Server Error');
+  }
 });
 
 // Delete
 todoRoutes.delete('/todos/:id', async (request, response) => {
-  const { id } = request.params;
+  try {
+    const intId = validateId(request.params.id, response);
+    if (intId === null) return;
 
-  const intId = parseInt(id);
+    const todo = await findTodoById(intId, response);
+    if (todo === null) return;
 
-  if (!intId) return response.status(400).json('Id is required');
+    await prisma.tagTodo.deleteMany({ where: { todoId: intId } });
+    await prisma.todo.delete({ where: { id: intId } });
 
-  const todoAlreadyExist = await prisma.todo.findUnique({
-    where: { id: intId }
-  });
+    await prisma.log.create({
+      data: {
+        table_name: 'Todo',
+        action: 'DELETE',
+        record_id: intId
+      }
+    });
 
-  if (!todoAlreadyExist) return response.status(404).json('Todo not exists');
-
-  await prisma.tagTodo.deleteMany({
-    where: { todoId: intId }
-  });
-
-  await prisma.todo.delete({ where: { id: intId } });
-
-  return response.status(200).json({ success: 'Todo deleted' });
+    return response.status(200).json({ success: 'Todo deleted' });
+  } catch (error) {
+    console.error(error);
+    return handleError(response, 500, 'Internal Server Error');
+  }
 });
 
 module.exports = todoRoutes;
